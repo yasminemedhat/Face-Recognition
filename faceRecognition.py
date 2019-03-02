@@ -77,7 +77,7 @@ def main():
     alpha=np.array([0.8,0.85,0.9,0.95])
     reducedD,vecs=PCA(trainf,alpha)  #number of dimensions for each alpha and eigenvector to use
     for alph,dim in zip(alpha,reducedD):
-        print("For alpha= ",alph,"\nDimension= ",int(dim)+1)
+        print("For alpha= ",alph,"\nDimensions= ",int(dim)+1)
         reduced=vecs[:,:int(dim)+1]
         Atrain=reduced.T.dot(trainf.T)
         Atrain=Atrain.T
