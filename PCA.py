@@ -15,7 +15,7 @@ def PCA(D , alpha):
     #compute mean, axis=1-->
     global mean
     mean=np.mean(D,axis=0)
-    print("Mean=\n",mean)
+    #print("Mean=\n",mean)
     #Centre the data
     #no need to transpose the mean because
     #default shape is a vector
@@ -26,7 +26,7 @@ def PCA(D , alpha):
     #bias=Ture --> normalization is by N
     global cov
     cov=np.cov(Z,rowvar=False,bias=True)
-    print("cov=\n",cov)
+    #print("cov=\n",cov)
     #EigenValues and EigenVecs:
     global vals,vecs,reduced
     vals, vecs = np.linalg.eigh(cov)
@@ -35,24 +35,26 @@ def PCA(D , alpha):
     index=vals.argsort()[::-1] #return indices used for sorting
     vals=vals[index]
     vecs=vecs[:,index]
-    print("vals=\n",vals)
-    print("vecs=\n",vecs)
+    #print("vals=\n",vals)
+    #print("vecs=\n",vecs)
 
     
     #Explained Variance -> choose dimensionality
     sumVals=np.sum(vals)
-    fractionVals=0
-    i=-1; #will use first i vecs
-    print(vals.size)
-    while (round(fractionVals/float(sumVals),2)<alpha and i<vals.size-1):
-        i+=1
-        fractionVals+=vals[i]
-        print(i,fractionVals/float(sumVals))
-    else:
-        print("Needed r (starting from zero)= ",i) 
-        reduced=vecs[:,:i+1]
+    reducedD=np.empty(shape=4)
+    #for each alpha, find dimension
+    for j in range(0,4):#four alphas
+        fractionVals=0
+        i=-1; #will use first i vecs
+        while (round(fractionVals/float(sumVals),2)<alpha[j] and i<vals.size-1):
+            i+=1
+            fractionVals+=vals[i]
+            #print(i,fractionVals/float(sumVals))
+        else:
+            reducedD[j]=i
         
-    return reduced
+        
+    return reducedD,vecs
         
     
 #Testing using iris dataset 
